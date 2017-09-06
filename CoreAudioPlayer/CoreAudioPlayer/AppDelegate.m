@@ -38,8 +38,7 @@
     
     
     
-    // Load audio file
-    CAPLoadAudioPlayer((__bridge CFURLRef) url, &_audioOutput.player);
+
     
     
     // Start audio
@@ -50,7 +49,6 @@
 
 -(void)dealloc {
     CAPDisposeAudioOutput(&_audioOutput);
-    CAPDisposeAudioPlayer(&_audioOutput.player);
 }
 
 

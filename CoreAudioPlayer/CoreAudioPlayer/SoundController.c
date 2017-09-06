@@ -37,27 +37,26 @@ static OSStatus CAPRenderProc(void *inRefCon,
                                UInt32 inNumberFrames,
                                AudioBufferList * ioData) {
     
-    CAPAudioOutput *audioOutput = (CAPAudioOutput*)inRefCon;
-    CAPAudioPlayer *audioPlayer = &audioOutput->player;
     
-    UInt32 currentFrame = audioPlayer->currentFrame;
-    UInt32 maxFrames = audioPlayer->frames;
+    
+    
+    CAPAudioOutput *audioOutput = (CAPAudioOutput*)inRefCon;
+
+
     
     Float32 *outputData = (Float32*)ioData->mBuffers[0].mData;
-    Float32 *inputData = (Float32*)audioPlayer->bufferList->mBuffers[0].mData;
+    
     
     for (UInt32 frame = 0; frame < inNumberFrames; ++frame) {
         UInt32 outSample = frame * 2;
-        UInt32 inSample = currentFrame * 2;
+        //UInt32 inSample = currentFrame * 2;
         
-        (outputData)[outSample] = (inputData)[inSample];
-        (outputData)[outSample+1] = (inputData)[inSample + 1];
+        //(outputData)[outSample] = (inputData)[inSample];
+        //(outputData)[outSample+1] = (inputData)[inSample + 1];
         
-        currentFrame++;
-        currentFrame = currentFrame % maxFrames; // loop
+        //currentFrame++;
     }
     
-    audioPlayer->currentFrame = currentFrame;
     
     return noErr;
 }
@@ -83,140 +82,7 @@ static void CheckError(OSStatus error, const char *operation) {
     exit(1);
 }
 
-#pragma mark - audio player functions -
 
-void CAPLoadAudioPlayer(CFURLRef url, CAPAudioPlayer * audioPlayer) {
-    ExtAudioFileRef audioFile;
-    OSStatus status = noErr;
-    
-    
-    // Open file
-    status = ExtAudioFileOpenURL(url, &audioFile);
-    CheckError(status,"Could not open audio file");
-    
-    
-    // Get files information
-    AudioStreamBasicDescription fileAudioDescription;
-    UInt32 size = sizeof(fileAudioDescription);
-    status = ExtAudioFileGetProperty(audioFile,
-                                     kExtAudioFileProperty_FileDataFormat,
-                                     &size,
-                                     &fileAudioDescription);
-    CheckError(status,"Could not get file data format");
-    
-    
-    // Apply audio format
-    status = ExtAudioFileSetProperty(audioFile,
-                                     kExtAudioFileProperty_ClientDataFormat,
-                                     sizeof(CAPAudioDescription),
-                                     &CAPAudioDescription);
-    CheckError(status,"Could not apply audio format");
-    
-    
-    // Determine length in frames (in original file's sample rate)
-    UInt64 fileLengthInFrames;
-    size = sizeof(fileLengthInFrames);
-    status = ExtAudioFileGetProperty(audioFile,
-                                     kExtAudioFileProperty_FileLengthFrames,
-                                     &size,
-                                     &fileLengthInFrames);
-    CheckError(status,"Could not get file length in frames");
-    
-    
-    // Calculate the true length in frames, given the original and target sample rates
-    fileLengthInFrames = ceil(fileLengthInFrames * (CAPAudioDescription.mSampleRate / fileAudioDescription.mSampleRate));
-    
-    
-    // Prepare AudioBufferList: Interleaved data uses just one buffer, non-interleaved has two
-    int numberOfBuffers = CAPAudioDescription.mFormatFlags & kAudioFormatFlagIsNonInterleaved ? CAPAudioDescription.mChannelsPerFrame : 1;
-    int channelsPerBuffer = CAPAudioDescription.mFormatFlags & kAudioFormatFlagIsNonInterleaved ? 1 : CAPAudioDescription.mChannelsPerFrame;
-    int bytesPerBuffer = CAPAudioDescription.mBytesPerFrame * (int)fileLengthInFrames;
-    
-    AudioBufferList *bufferList = malloc(sizeof(AudioBufferList) + (numberOfBuffers-1)*sizeof(AudioBuffer));
-    
-    if ( !bufferList ) {
-        ExtAudioFileDispose(audioFile);
-        printf("Could not allocate memory for bufferList");
-        exit(1);
-        return;
-    }
-    
-    bufferList->mNumberBuffers = numberOfBuffers;
-    for ( int i=0; i<numberOfBuffers; i++ ) {
-        if ( bytesPerBuffer > 0 ) {
-            bufferList->mBuffers[i].mData = calloc(bytesPerBuffer, 1);
-            if ( !bufferList->mBuffers[i].mData ) {
-                for ( int j=0; j<i; j++ ) {
-                    free(bufferList->mBuffers[j].mData);
-                }
-                free(bufferList);
-                ExtAudioFileDispose(audioFile);
-                printf("Could not allocate memory for buffer");
-                exit(1);
-                return;
-            }
-        } else {
-            bufferList->mBuffers[i].mData = NULL;
-        }
-        bufferList->mBuffers[i].mDataByteSize = bytesPerBuffer;
-        bufferList->mBuffers[i].mNumberChannels = channelsPerBuffer;
-    }
-    
-    
-    
-    
-    // Create a stack copy of the given audio buffer list and offset mData pointers, with offset in bytes
-    char scratchBufferList_bytes[sizeof(AudioBufferList)+(sizeof(AudioBuffer)*(bufferList->mNumberBuffers-1))];
-    memcpy(scratchBufferList_bytes, bufferList, sizeof(scratchBufferList_bytes));
-    AudioBufferList * scratchBufferList = (AudioBufferList*)scratchBufferList_bytes;
-    for ( int i=0; i<scratchBufferList->mNumberBuffers; i++ ) {
-        scratchBufferList->mBuffers[i].mData = (char*)scratchBufferList->mBuffers[i].mData;
-    }
-    
-    // Perform read in multiple small chunks (otherwise ExtAudioFileRead crashes when performing sample rate conversion)
-    UInt32 readFrames = 0;
-    while (readFrames < fileLengthInFrames) {
-        UInt32 framesLeftToRead = (UInt32)fileLengthInFrames - readFrames;
-        UInt32 framesToRead = (16384 < framesLeftToRead) ? framesLeftToRead : 16384;
-        
-        // Set the scratch buffer to point to the correct position on the real buffer
-        scratchBufferList->mNumberBuffers = bufferList->mNumberBuffers;
-        for ( int i=0; i<bufferList->mNumberBuffers; i++ ) {
-            scratchBufferList->mBuffers[i].mNumberChannels = bufferList->mBuffers[i].mNumberChannels;
-            scratchBufferList->mBuffers[i].mData = bufferList->mBuffers[i].mData + (readFrames * CAPAudioDescription.mBytesPerFrame);
-            scratchBufferList->mBuffers[i].mDataByteSize = framesToRead * CAPAudioDescription.mBytesPerFrame;
-        }
-        
-        // Perform read
-        status = ExtAudioFileRead(audioFile, &framesToRead, scratchBufferList);
-        
-        // Break if no frames were read
-        if ( framesToRead == 0 ) break;
-        
-        readFrames += framesToRead;
-    }
-    
-    
-    // Clean up
-    ExtAudioFileDispose(audioFile);
-    
-    
-    // BufferList and readFrames are the audio we loaded
-    audioPlayer->bufferList = bufferList;
-    audioPlayer->frames = readFrames;
-}
-
-void CAPDisposeAudioPlayer(CAPAudioPlayer * audioPlayer) {
-    if (audioPlayer != NULL) {
-        AudioBufferList * bufferList = audioPlayer->bufferList;
-        if (bufferList != NULL) {
-            for ( int j=0; j<bufferList->mNumberBuffers; j++ ) {
-                free(bufferList->mBuffers[j].mData);
-            }
-            free(bufferList);
-        }
-    }
-}
 
 #pragma mark - audio output functions -
 
