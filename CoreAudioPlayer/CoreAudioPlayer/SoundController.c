@@ -32,8 +32,6 @@ AudioStreamBasicDescription const CAPAudioDescription = {
 
 
 
-
-
 #pragma mark - callback function -
 
 static OSStatus CAPRenderProc(void *inRefCon,
@@ -44,22 +42,17 @@ static OSStatus CAPRenderProc(void *inRefCon,
                                AudioBufferList * ioData) {
     
     
-    
-    
-    //CAPAudioOutput *audioOutput = (CAPAudioOutput*)inRefCon;
-
-
+    double left;
+    double right;
     
     Float32 *outputData = (Float32*)ioData->mBuffers[0].mData;
-    
     
     for (UInt32 frame = 0; frame < inNumberFrames; ++frame) {
         UInt32 outSample = frame * 2;
         
-        double *left = (double*)&((outputData)[outSample]);
-        double *right = (double*)&((outputData)[outSample + 1]);
-        MaximilianDemoPlay(left, right);
-
+        MaximilianDemoPlay(&left, &right);
+        (outputData)[outSample] = (Float32)left;
+        (outputData)[outSample + 1] = (Float32)right;
     }
     
     
