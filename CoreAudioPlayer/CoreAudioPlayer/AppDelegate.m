@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <AVFoundation/AVFoundation.h>
 #import "SoundController.h"
+#import "MaximilianDemo.hpp"
 
 @interface AppDelegate ()
 
@@ -33,12 +34,6 @@
     if ( ![[AVAudioSession sharedInstance] setActive:YES error:&error] ) {
         NSLog(@"Couldn't set audio session active: %@", error);
     }
-    
-    NSURL* url = [[NSBundle mainBundle] URLForResource:@"Are You Ready" withExtension:@"mp3"];
-    
-    
-    
-
     
     
     // Start audio

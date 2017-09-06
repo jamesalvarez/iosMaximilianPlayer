@@ -11,10 +11,16 @@
 
 #include <stdio.h>
 
-extern "C"
-{
-    void setup();
-    void play(double *output);
-}
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
+
+
+
+EXTERNC void MaximilianDemoPlay(double *left, double *right);
+
+
 
 #endif /* MaximilianDemo_hpp */

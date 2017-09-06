@@ -8,6 +8,9 @@
 
 
 #include "SoundController.h"
+#include "MaximilianDemo.hpp"
+
+
 
 
 #define CAP_SAMPLE_RATE 44100
@@ -28,6 +31,9 @@ AudioStreamBasicDescription const CAPAudioDescription = {
 };
 
 
+
+
+
 #pragma mark - callback function -
 
 static OSStatus CAPRenderProc(void *inRefCon,
@@ -40,7 +46,7 @@ static OSStatus CAPRenderProc(void *inRefCon,
     
     
     
-    CAPAudioOutput *audioOutput = (CAPAudioOutput*)inRefCon;
+    //CAPAudioOutput *audioOutput = (CAPAudioOutput*)inRefCon;
 
 
     
@@ -49,12 +55,11 @@ static OSStatus CAPRenderProc(void *inRefCon,
     
     for (UInt32 frame = 0; frame < inNumberFrames; ++frame) {
         UInt32 outSample = frame * 2;
-        //UInt32 inSample = currentFrame * 2;
         
-        //(outputData)[outSample] = (inputData)[inSample];
-        //(outputData)[outSample+1] = (inputData)[inSample + 1];
-        
-        //currentFrame++;
+        double *left = (double*)&((outputData)[outSample]);
+        double *right = (double*)&((outputData)[outSample + 1]);
+        MaximilianDemoPlay(left, right);
+
     }
     
     

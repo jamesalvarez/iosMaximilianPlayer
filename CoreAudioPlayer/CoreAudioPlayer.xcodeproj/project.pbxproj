@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A2D16251F6028EA008629FD /* maximilian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A2D16231F6028EA008629FD /* maximilian.cpp */; };
 		1A2D16271F602B6D008629FD /* libs in Resources */ = {isa = PBXBuildFile; fileRef = 1A2D16261F602B6D008629FD /* libs */; };
-		1A2D162A1F602C30008629FD /* MaximilianDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A2D16281F602C30008629FD /* MaximilianDemo.cpp */; };
+		1A2D162D1F60322A008629FD /* MaximilianDemo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A2D162B1F60322A008629FD /* MaximilianDemo.cpp */; };
 		1AA6E9861D81B72A0093756B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA6E9851D81B72A0093756B /* main.m */; };
 		1AA6E9891D81B72A0093756B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA6E9881D81B72A0093756B /* AppDelegate.m */; };
 		1AA6E98C1D81B72A0093756B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AA6E98B1D81B72A0093756B /* ViewController.m */; };
@@ -20,15 +20,14 @@
 		1AA6E99F1D81B7EE0093756B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA6E99E1D81B7EE0093756B /* CoreAudio.framework */; };
 		1AA6E9A11D81B7F30093756B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA6E9A01D81B7F30093756B /* AudioToolbox.framework */; };
 		1AA6E9A31D81B8010093756B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA6E9A21D81B8010093756B /* CoreFoundation.framework */; };
-		1AA6E9A51D81B8720093756B /* Are You Ready.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1AA6E9A41D81B8720093756B /* Are You Ready.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A2D16231F6028EA008629FD /* maximilian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = maximilian.cpp; sourceTree = "<group>"; };
 		1A2D16241F6028EA008629FD /* maximilian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = maximilian.h; sourceTree = "<group>"; };
 		1A2D16261F602B6D008629FD /* libs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = libs; sourceTree = "<group>"; };
-		1A2D16281F602C30008629FD /* MaximilianDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MaximilianDemo.cpp; sourceTree = "<group>"; };
-		1A2D16291F602C30008629FD /* MaximilianDemo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MaximilianDemo.hpp; sourceTree = "<group>"; };
+		1A2D162B1F60322A008629FD /* MaximilianDemo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MaximilianDemo.cpp; sourceTree = "<group>"; };
+		1A2D162C1F60322A008629FD /* MaximilianDemo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MaximilianDemo.hpp; sourceTree = "<group>"; };
 		1AA6E9811D81B72A0093756B /* CoreAudioPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreAudioPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AA6E9851D81B72A0093756B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1AA6E9871D81B72A0093756B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -44,7 +43,6 @@
 		1AA6E99E1D81B7EE0093756B /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		1AA6E9A01D81B7F30093756B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		1AA6E9A21D81B8010093756B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		1AA6E9A41D81B8720093756B /* Are You Ready.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Are You Ready.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +84,6 @@
 				1A2D16261F602B6D008629FD /* libs */,
 				1A2D16231F6028EA008629FD /* maximilian.cpp */,
 				1A2D16241F6028EA008629FD /* maximilian.h */,
-				1AA6E9A41D81B8720093756B /* Are You Ready.mp3 */,
 				1AA6E9871D81B72A0093756B /* AppDelegate.h */,
 				1AA6E9881D81B72A0093756B /* AppDelegate.m */,
 				1AA6E98A1D81B72A0093756B /* ViewController.h */,
@@ -98,8 +95,8 @@
 				1AA6E9841D81B72A0093756B /* Supporting Files */,
 				1AA6E99B1D81B7680093756B /* SoundController.c */,
 				1AA6E99C1D81B7680093756B /* SoundController.h */,
-				1A2D16281F602C30008629FD /* MaximilianDemo.cpp */,
-				1A2D16291F602C30008629FD /* MaximilianDemo.hpp */,
+				1A2D162B1F60322A008629FD /* MaximilianDemo.cpp */,
+				1A2D162C1F60322A008629FD /* MaximilianDemo.hpp */,
 			);
 			path = CoreAudioPlayer;
 			sourceTree = "<group>";
@@ -171,7 +168,6 @@
 			files = (
 				1A2D16271F602B6D008629FD /* libs in Resources */,
 				1AA6E9941D81B72A0093756B /* LaunchScreen.storyboard in Resources */,
-				1AA6E9A51D81B8720093756B /* Are You Ready.mp3 in Resources */,
 				1AA6E9911D81B72A0093756B /* Assets.xcassets in Resources */,
 				1AA6E98F1D81B72A0093756B /* Main.storyboard in Resources */,
 			);
@@ -189,7 +185,7 @@
 				1AA6E9861D81B72A0093756B /* main.m in Sources */,
 				1AA6E99D1D81B7680093756B /* SoundController.c in Sources */,
 				1A2D16251F6028EA008629FD /* maximilian.cpp in Sources */,
-				1A2D162A1F602C30008629FD /* MaximilianDemo.cpp in Sources */,
+				1A2D162D1F60322A008629FD /* MaximilianDemo.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

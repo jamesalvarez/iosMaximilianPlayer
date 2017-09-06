@@ -7,30 +7,31 @@
 //
 
 #include "MaximilianDemo.hpp"
-
 #include "maximilian.h"
 
-maxiOsc myOsc;
-maxiEnvelope myEnv;
-int counter;
+struct MaximilianDemo {
+    maxiOsc myOsc;
+    maxiEnvelope myEnv;
+    int counter;
+};
 
-void setup() {
-}
+MaximilianDemo demo;
 
-void play(double *output) {
+
+void MaximilianDemoPlay(double *left, double *right) {
     
     
-    if (counter ==0 || counter % 8820==0) {
-        myEnv.trigger(true);
+    if (demo.counter ==0 || demo.counter % 8820==0) {
+        demo.myEnv.trigger(true);
     }
     
     
-    counter++;
+    demo.counter++;
     
-    double out = myEnv.ar(0.01,1);
+    double out = demo.myEnv.ar(0.01,1);
     
-    output[0]=myOsc.sinewave(440)*out;
+    *left = demo.myOsc.sinewave(440)*out;
     
-    output[1]=output[0];
+    *right = *left;
     
 }
